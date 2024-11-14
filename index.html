@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Capture Location</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 50px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Please allow location access to proceed</h3>
+    <p>Click the button below to share your location, then you'll be redirected to the form.</p>
+    <button onclick="captureLocation()">Capture Location</button>
+
+    <script>
+      function captureLocation() {
+        if (navigator.geolocation) {
+          // Request user's location
+          navigator.geolocation.getCurrentPosition(function(position) {
+            const lat = position.coords.latitude;
+            const long = position.coords.longitude;
+
+            console.log("Location Captured: Latitude: " + lat + ", Longitude: " + long);
+
+            // After a short delay, redirect to the form with captured location
+            setTimeout(function() {
+              const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLScYdjZI5vkPOPfTxfJ-YLK8QuUHrcFH8t-1yxR1fy4_tD7LFQ/viewform?usp=pp_url";
+              const urlWithLocation = formUrl + 
+                "&entry.537412436=" + lat + // Latitude
+                "&entry.6689407=" + long;   // Longitude
+
+              window.location.href = urlWithLocation;
+            }, 1000); // 1-second delay
+          }, function(error) {
+            console.error("Error with geolocation: " + error.message);
+            alert("Location access denied. Please enable location in your browser settings.");
+          });
+        } else {
+          alert("Geolocation is not supported by this browser.");
+        }
+      }
+    </script>
+  </body>
+</html>
